@@ -14,6 +14,10 @@ module.exports = function (grunt) {
         }).join(" ") + " }\n";
     }
 
+    function quoteString(str) {
+        return '"' + str + '"';
+    }
+
     grunt.registerMultiTask("montage", "Generate CSS sprite sheets and the corresponding stylesheet", function () {
 
         // It's an async task so make sure Grunt knows this
@@ -83,7 +87,7 @@ module.exports = function (grunt) {
             grunt.file.write(path.join(files.dest, options.outputStylesheet), css);
 
             // Execute the ImageMagick montage tool
-            exec("montage -tile " + cols + "x -geometry " + options.size + "x" + options.size + " " + cliOptions + " " + src.join(" ") + " " + dest, function (err) {
+            exec("montage -tile " + cols + "x -geometry " + options.size + "x" + options.size + " " + cliOptions + " " + src.map(quoteString).join(" ") + " " + dest, function (err) {
                 done();
             });
         });
